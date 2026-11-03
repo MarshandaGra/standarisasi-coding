@@ -1,53 +1,120 @@
 const TodoList = require('../src/todo');
 
-describe('TodoList Class', () => {
+describe('TodoList Class - Unit Tests', () => {
   let todoList;
 
   beforeEach(() => {
+    // Arrange (Global Setup per test)
     todoList = new TodoList();
   });
 
-  test('should initialize with an empty todo list', () => {
-    expect(todoList.getTodos()).toEqual([]);
+  test('1. should initialize with an empty todo list', () => {
+    // Act
+    const todos = todoList.getTodos();
+
+    // Assert
+    expect(todos).toEqual([]);
+    expect(todos.length).toBe(0);
   });
 
-  test('should add a new todo successfully', () => {
-    const todo = todoList.addTodo('Belajar Standarisasi Kode');
-    expect(todo.task).toBe('Belajar Standarisasi Kode');
-    expect(todo.completed).toBe(false);
+  test('2. should add a new todo successfully', () => {
+    // Arrange
+    const taskText = 'Belajar Standarisasi Kode';
+
+    // Act
+    const newTodo = todoList.addTodo(taskText);
+
+    // Assert
+    expect(newTodo).toHaveProperty('id');
+    expect(newTodo.task).toBe(taskText);
+    expect(newTodo.completed).toBe(false);
     expect(todoList.getTodos().length).toBe(1);
   });
 
-  test('should throw an error if task is empty when adding', () => {
-    expect(() => todoList.addTodo('')).toThrow('Task cannot be empty');
-    expect(() => todoList.addTodo('   ')).toThrow('Task cannot be empty');
+  test('3. should throw an error if task is empty string', () => {
+    // Arrange
+    const emptyTask = '';
+
+    // Act & Assert
+    expect(() => todoList.addTodo(emptyTask)).toThrow('Task cannot be empty');
   });
 
-  test('should toggle todo completion status', () => {
+  test('4. should throw an error if task contains only spaces', () => {
+    // Arrange
+    const spacedTask = '   ';
+
+    // Act & Assert
+    expect(() => todoList.addTodo(spacedTask)).toThrow('Task cannot be empty');
+  });
+
+  test('5. should toggle todo completion status from false to true', () => {
+    // Arrange
     const todo = todoList.addTodo('Testing dengan Jest');
-    expect(todo.completed).toBe(false);
+    const todoId = todo.id;
 
-    const updated = todoList.toggleTodo(todo.id);
-    expect(updated.completed).toBe(true);
+    // Act
+    const updatedTodo = todoList.toggleTodo(todoId);
 
+    // Assert
+    expect(updatedTodo.completed).toBe(true);
+  });
+
+  test('6. should toggle todo completion status back from true to false', () => {
+    // Arrange
+    const todo = todoList.addTodo('Testing dengan Jest');
+    todoList.toggleTodo(todo.id); // Ubah ke true dulu
+
+    // Act
     const toggledBack = todoList.toggleTodo(todo.id);
+
+    // Assert
     expect(toggledBack.completed).toBe(false);
   });
 
-  test('should throw an error when toggling a non-existent todo', () => {
-    expect(() => todoList.toggleTodo(999)).toThrow('Todo not found');
+  test('7. should throw an error when toggling a non-existent todo ID', () => {
+    // Arrange
+    const invalidId = 99999;
+
+    // Act & Assert
+    expect(() => todoList.toggleTodo(invalidId)).toThrow('Todo not found');
   });
 
-  test('should remove a todo successfully', () => {
+  test('8. should remove a todo successfully', () => {
+    // Arrange
     const todo = todoList.addTodo('Hapus tugas ini');
+    const todoId = todo.id;
     expect(todoList.getTodos().length).toBe(1);
 
-    const removed = todoList.removeTodo(todo.id);
-    expect(removed.task).toBe('Hapus tugas ini');
+    // Act
+    const removedTodo = todoList.removeTodo(todoId);
+
+    // Assert
+    expect(removedTodo.task).toBe('Hapus tugas ini');
     expect(todoList.getTodos().length).toBe(0);
   });
 
-  test('should throw an error when removing a non-existent todo', () => {
-    expect(() => todoList.removeTodo(999)).toThrow('Todo not found');
+  test('9. should throw an error when removing a non-existent todo ID', () => {
+    // Arrange
+    const invalidId = 88888;
+
+    // Act & Assert
+    expect(() => todoList.removeTodo(invalidId)).toThrow('Todo not found');
+  });
+
+  test('10. should handle multiple todos and manage them independently', () => {
+    // Arrange
+    const task1 = 'Tugas Pertama';
+    const task2 = 'Tugas Kedua';
+
+    // Act
+    const todo1 = todoList.addTodo(task1);
+    todoList.addTodo(task2);
+    todoList.toggleTodo(todo1.id);
+
+    // Assert
+    const allTodos = todoList.getTodos();
+    expect(allTodos.length).toBe(2);
+    expect(allTodos[0].completed).toBe(true);
+    expect(allTodos[1].completed).toBe(false);
   });
 });

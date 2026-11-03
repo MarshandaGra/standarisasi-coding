@@ -2,16 +2,16 @@
   "name": "standarisasi-coding",
   "version": "1.0.0",
   "description": "Latihan Pengujian dan Integrasi Kode",
-  "scripts": { 
-    "test": "jest", 
-    "test:coverage": "jest --coverage", 
-    "lint": "eslint .", 
-    "format:check": "prettier --check .", 
-    "coverage:check": "jest --coverage" 
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "coverage:check": "jest --coverage"
   },
-  "devDependencies": { 
-    "jest": "^29.7.0", 
-    "eslint": "^8.57.0", 
-    "prettier": "^3.2.0" 
-  } 
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0"
+  }
 }

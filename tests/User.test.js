@@ -1,11 +1,10 @@
 const User = require('../src/User');
 describe('User', () => {
-    describe('when created with valid data', () => {
-        let user;
+  describe('when created with valid data', () => {
+    let user;
     beforeEach(() => {
-    
-    // Arrange
-        user = new User('John', 'john@test.com', 25);
+      // Arrange
+      user = new User('John', 'john@test.com', 25);
     });
     test('should return correct name', () => {
       expect(user.getName()).toBe('John');
